@@ -3,8 +3,27 @@ import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Card from 'react-bootstrap/Card';
+import { useAuth } from "../contexts/AuthContext"
+import { useNavigate } from "react-router"
+
 
 export function Login() {
+    const handleSubmit = (event) => {
+
+        const { doLogin } = useAuth();
+        const navigate = useNavigate();
+
+        event.preventDefault();
+
+        const email = event.target.elements.email.value; 
+        const password = event.target.elements.password.value;
+
+
+        if (email && password) {
+            doLogin();
+            navigate("/dashboard");
+        }
+    }
     return (
         <>
             <Container>
@@ -17,15 +36,15 @@ export function Login() {
             <Container>
                 <Card>
                     <Card.Body>
-                        <Form>
+                        <Form onSubmit={handleSubmit}>
                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                 <Form.Label>Email</Form.Label>
-                                <Form.Control type="email" placeholder="Enter email" />
+                                <Form.Control type="email" name="email" placeholder="Enter email" />
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formBasicPassword">
                                 <Form.Label>Senha</Form.Label>
-                                <Form.Control type="password" placeholder="Password" />
+                                <Form.Control type="password" name="password" placeholder="Password" />
                             </Form.Group>
                             <Button variant="primary" type="submit">
                                 Entrar
